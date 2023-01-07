@@ -1,6 +1,5 @@
 package cn.jmzzz.easycoupon.service;
 
-import com.alibaba.fastjson2.JSON;
 import com.pdd.pop.sdk.http.PopClient;
 import com.pdd.pop.sdk.http.PopHttpClient;
 import com.pdd.pop.sdk.http.api.pop.request.PddDdkGoodsSearchRequest;
@@ -8,6 +7,7 @@ import com.pdd.pop.sdk.http.api.pop.response.PddDdkGoodsSearchResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
 @Service
@@ -23,7 +23,7 @@ public class GoodsQuery {
     @Value("${pdd.pid}")
     private String PID;
 
-    public String getByKeyword(String keyword) throws Exception {
+    public List<PddDdkGoodsSearchResponse.GoodsSearchResponseGoodsListItem> getByKeyword(String keyword) throws Exception {
         if (client == null) {
             client = new PopHttpClient(KEY, SECRET);
         }
@@ -32,6 +32,6 @@ public class GoodsQuery {
         request.setPid(PID);
 
         Future<PddDdkGoodsSearchResponse> futureResponse = client.asyncInvoke(request);
-        return JSON.toJSONString(futureResponse.get());
+        return futureResponse.get().getGoodsSearchResponse().getGoodsList();
     }
 }

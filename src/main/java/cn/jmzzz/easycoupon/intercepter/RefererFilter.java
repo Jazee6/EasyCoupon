@@ -6,7 +6,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 
 public class RefererFilter implements HandlerInterceptor {
 
@@ -18,7 +17,6 @@ public class RefererFilter implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        System.out.println(Arrays.toString(whitelist));
         String referer = request.getHeader("Referer");
         if (referer == null) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -26,13 +24,16 @@ public class RefererFilter implements HandlerInterceptor {
         }
         URL refererUrl;
         try {
-            refererUrl = new URL(request.getHeader("Referer"));
+            refererUrl = new URL(referer);
         } catch (MalformedURLException e) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return false;
         }
+
         for (String domain : whitelist) {
             if (refererUrl.getHost().equals(domain)) {
+                response.setHeader("Access-Control-Allow-Origin", refererUrl.getProtocol() + "://" + refererUrl.getHost() + ":" + refererUrl.getPort());
+                // 临时解决CORS
                 return true;
             }
         }

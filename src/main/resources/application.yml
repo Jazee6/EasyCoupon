@@ -10,5 +10,6 @@ server:
   ssl:
     key-store: classpath:server.jks
     key-store-type: JKS
+    enabled: false
   http2:
-    enabled: true
+    enabled: false
