@@ -7,17 +7,23 @@ import lombok.Setter;
 @Setter
 public class R {
     private int code;
-    private String msg;
+    private String message;
     private Object data;
 
     public R(Code code, Msg msg, Object data) {
         this.code = code.getValue();
-        this.msg = msg.getValue();
+        this.message = msg.getValue();
         this.data = data;
     }
 
     public R(Code code, Msg msg) {
         this.code = code.getValue();
-        this.msg = msg.getValue();
+        this.message = msg.getValue();
+    }
+
+    public R(Object data) {
+        this.code = Code.SUCCESS.getValue();
+        this.message = Msg.SUCCESS.getValue();
+        this.data = data;
     }
 }
