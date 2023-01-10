@@ -32,7 +32,7 @@ public class RefererFilter implements HandlerInterceptor {
 
         for (String domain : whitelist) {
             if (refererUrl.getHost().equals(domain)) {
-                response.setHeader("Access-Control-Allow-Origin", refererUrl.getProtocol() + "://" + refererUrl.getHost() + ":" + refererUrl.getPort());
+                response.setHeader("Access-Control-Allow-Origin", refererUrl.getProtocol() + "://" + refererUrl.getHost() + (refererUrl.getPort() == -1 ? "" : ":" + refererUrl.getPort()));
                 // 临时解决CORS
                 return true;
             }
